@@ -15,24 +15,22 @@ import com.cbre.dataservices.models.SubmissionStatus;
 @RequestMapping("/api/properties")
 public class PropertyController {
 
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
-
     @Autowired
     private ElasticsearchRepository elasticsearchRepository;
 
     @RequestMapping(path = "/{propertyId}")
     public Property getPropertyById(@PathVariable(value="propertyId") String propertyId) {
-        return new Property(counter.incrementAndGet(),
-                String.format(template, propertyId));
+
+        return new Property();
     }
 
     @RequestMapping(value = "")
-    public PropertyList queryProperties(@RequestParam(value="name", defaultValue="World") String name) {
+    public PropertyList queryProperties(@RequestParam(value="queryText", defaultValue="") String queryText,
+                                        @RequestParam(value="limit", defaultValue="10") int limit,
+                                        @RequestParam(value="offset", defaultValue="0") int offset) throws Exception {
 
-        PropertyList resp = new PropertyList();
-
-        elasticsearchRepository.queryProperties();
+        PropertyList resp;
+        resp = elasticsearchRepository.queryProperties(queryText, offset, limit);
 
         return resp;
     }

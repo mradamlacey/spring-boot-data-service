@@ -5,7 +5,10 @@ public class SubmissionStatus {
     private int statusCode;
     private String message;
 
-    public SubmissionStatus(){
+    public SubmissionStatus(int code, String message){
+
+        this.statusCode = code;
+        this.message = message;
 
     }
 
