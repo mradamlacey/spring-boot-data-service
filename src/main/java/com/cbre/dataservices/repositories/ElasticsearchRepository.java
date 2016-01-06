@@ -132,6 +132,11 @@ public class ElasticsearchRepository {
 
     private StringBuffer sendHttpGet(String url) throws Exception{
         HttpClient client = new DefaultHttpClient();
+        SSLSocketFactory sf = new SSLSocketFactory(sslTrustAllManager.getSSLContext());
+        Scheme scheme = new Scheme("https", sf, 443);
+
+        client.getConnectionManager().getSchemeRegistry().register(scheme);
+
         HttpGet request = new HttpGet(url);
 
         request.addHeader("accept", "application/json");
